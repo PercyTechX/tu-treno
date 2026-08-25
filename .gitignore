@@ -1,0 +1,25 @@
+node_modules/
+dist/
+
+# Generado sólo para la maqueta; la app usa src/datos/indice.json
+datos.json
+maqueta/tu-treno.html
+icono-muestra.png
+recorte-prueba.png
+
+# Firma: si esto se filtra, cualquiera puede publicar actualizaciones de tu app.
+# Guárdalo fuera del PC, nunca aquí.
+*.keystore
+*.jks
+CLAVES-NO-SUBIR.txt
+
+# Android
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+android/app/src/main/assets/public/
+.DS_Store
+
+# OJO: public/media/ y public/pasos.json SÍ se suben — sin ellos GitHub Actions
+# no tiene con qué compilar el APK. Son 43 MB, y el APK los necesita dentro.

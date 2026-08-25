@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Tu Treno</string>
+    <string name="title_activity_main">Tu Treno</string>
+    <string name="package_name">com.percytech.tutreno</string>
+    <string name="custom_url_scheme">com.percytech.tutreno</string>
+</resources>

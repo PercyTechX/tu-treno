@@ -1,0 +1,347 @@
+/* Tu Treno — PercyTech Solutions
+   Paleta derivada del logo. Los azules oscuros son para lo que hay que leer
+   sudando y con luz dura encima; el azul claro de marca sólo decora. */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+img { display: block; max-width: 100%; }
+input { font: inherit; }
+ul, ol { list-style: none; }
+
+:root {
+  --azul-marca: #4AA2EF;
+  --azul-marca-2: #3F8BE8;
+  --azul: #1263C4;          /* relleno de botones, 5,8:1 con blanco encima */
+  --azul-activo: #1A6FD4;   /* estados activos sobre blanco puro */
+  --azul-suave: #EDF3FB;
+  --texto: #18202B;         /* 16,4:1 */
+  --texto-2: #5A6572;       /* 5,9:1 */
+  --texto-3: #6E7884;   /* 4,6:1 sobre blanco. El #8A94A0 anterior daba 3,08:1 */
+  --fondo: #F4F6F8;
+  --superficie: #FFFFFF;
+  --borde: #E3E8EE;
+  --error: #C4442B;
+  --r: 14px;
+  --tap: 56px;              /* mínimo con manos sudadas */
+  --hueco: 12px;
+}
+
+html, body, #raiz { height: 100%; }
+body {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+.app { height: 100%; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+
+/* ── Cabecera ─────────────────────────────────────────── */
+.cab {
+  background: var(--superficie); border-bottom: 1px solid var(--borde);
+  padding: 12px 16px; padding-top: calc(12px + env(safe-area-inset-top));
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.cab .logo { height: 24px; width: auto; }
+.cab .titulo { font-size: 17px; font-weight: 700; letter-spacing: -.2px; flex: 1; }
+.cab .icono {
+  width: 48px; height: 48px; margin: -12px -10px -12px -12px;
+  display: grid; place-items: center; font-size: 26px; color: var(--azul); flex-shrink: 0;
+}
+.cab .icono.der { margin: -10px -8px -10px 0; font-size: 21px; }
+
+/* ── Cuerpo ───────────────────────────────────────────── */
+.cuerpo { flex: 1; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+.pad { padding: 16px; }
+.rotulo {
+  font-size: 12px; font-weight: 700; letter-spacing: .9px; text-transform: uppercase;
+  color: var(--texto-3); margin: 4px 0 10px;
+}
+.nota { font-size: 13px; color: var(--texto-2); text-align: center; padding: 12px 16px 4px; line-height: 1.4; }
+.vacio { text-align: center; color: var(--texto-3); padding: 44px 20px; font-size: 15px; line-height: 1.6; }
+
+/* ── Presets ──────────────────────────────────────────── */
+.presets { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 22px; }
+.preset {
+  background: var(--superficie); border: 1px solid var(--borde); border-radius: var(--r);
+  padding: 14px; text-align: left; min-height: var(--tap);
+  transition: transform .1s ease, background .12s;
+}
+.preset:active { transform: scale(.975); background: var(--azul-suave); }
+.preset .n { font-size: 17px; font-weight: 700; display: block; }
+.preset .s { font-size: 14px; color: var(--texto-2); display: block; margin-top: 2px; line-height: 1.3; }
+.preset.ancho { grid-column: 1 / -1; }
+
+/* ── Chips de músculo ─────────────────────────────────── */
+.chips { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.chip {
+  min-height: var(--tap); border-radius: var(--r); border: 1.5px solid var(--borde);
+  background: var(--superficie); font-size: 16px; font-weight: 600;
+  display: flex; align-items: center; justify-content: space-between; gap: 6px;
+  padding: 0 14px; transition: background .12s, color .12s, transform .1s;
+}
+.chip:active { transform: scale(.975); }
+/* Relleno sólido, no borde: un borde de 2px no se ve a medio metro */
+.chip[aria-pressed="true"] { background: var(--azul); color: #fff; border-color: var(--azul); }
+.chip .tick { font-size: 17px; opacity: 0; flex-shrink: 0; transition: opacity .12s; }
+.chip[aria-pressed="true"] .tick { opacity: 1; }
+/* Con opacity los chips bloqueados seguían pareciendo pulsables. Relleno
+   plano: se ve que están apagados sin dejar de leerse. */
+.chip:disabled { opacity: 1; background: #EDF0F4; color: #7C8794; border-color: #EDF0F4; }
+.chip .txt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.aviso {
+  font-size: 14px; color: #7A5A18; background: #FFF6E5; border: 1px solid #F5DFB0;
+  border-radius: 10px; padding: 11px 13px; margin-top: 12px; line-height: 1.4;
+}
+
+/* ── Barra inferior ───────────────────────────────────── */
+.barra {
+  flex-shrink: 0; background: var(--superficie); border-top: 1px solid var(--borde);
+  padding: 12px 16px;
+}
+.reparto { font-size: 14px; color: var(--texto-2); text-align: center; margin-bottom: 8px; min-height: 20px; }
+.cta {
+  width: 100%; min-height: var(--tap); border-radius: var(--r); background: var(--azul);
+  color: #fff; font-size: 17px; font-weight: 700; transition: transform .1s, background .12s;
+  padding: 0 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.cta:active { transform: scale(.985); }
+/* "Elige qué entrenas" es lo primero que se ve al abrir: antes daba 1,96:1 */
+.cta:disabled { background: #DCE3EA; color: #5A6572; transform: none; }
+.cta.sec { background: transparent; color: var(--azul); border: 1.5px solid var(--azul); }
+
+/* ── Pestañas ─────────────────────────────────────────── */
+.tabs {
+  flex-shrink: 0; display: grid; grid-template-columns: 1fr 1fr;
+  background: var(--superficie); border-top: 1px solid var(--borde);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.tab {
+  min-height: var(--tap); display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 3px; font-size: 12px; font-weight: 600; color: var(--texto-3);
+}
+.tab .ic { font-size: 19px; line-height: 1; }
+.tab[aria-selected="true"] { color: var(--azul); }
+
+/* ── Sesión ───────────────────────────────────────────── */
+.cabsesion { padding: 14px 16px 12px; background: var(--superficie); border-bottom: 1px solid var(--borde); }
+.cabsesion h2 { font-size: 21px; font-weight: 800; letter-spacing: -.4px; line-height: 1.2; }
+.ajustes-linea { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+.pastilla {
+  font-size: 13px; font-weight: 600; color: var(--azul); background: var(--azul-suave);
+  border-radius: 999px; padding: 6px 12px; min-height: 32px;
+}
+
+.item {
+  display: flex; gap: 12px; align-items: center; background: var(--superficie);
+  border: 1px solid var(--borde); border-radius: var(--r); padding: 8px;
+  margin-bottom: 8px; min-height: var(--tap); text-align: left; width: 100%;
+  transition: transform .1s, background .12s;
+}
+.item:active { transform: scale(.99); background: var(--azul-suave); }
+.item .num {
+  width: 26px; height: 26px; border-radius: 50%; background: var(--fondo); color: var(--texto-2);
+  font-size: 13px; font-weight: 700; display: grid; place-items: center; flex-shrink: 0;
+}
+.item .miniatura {
+  width: 48px; height: 48px; border-radius: 10px; background: var(--fondo);
+  object-fit: cover; flex-shrink: 0;
+}
+.item .txt { flex: 1; min-width: 0; }
+/* display:block obligatorio: son <span> dentro de un flex ITEM, no de un flex
+   container, así que sin esto los tres textos se renderizan en línea corrida y
+   la prescripción azul queda enterrada en medio del párrafo. */
+.item .nom {
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden; font-size: 16px; font-weight: 700; line-height: 1.25;
+}
+.item .en { display: block; font-size: 12px; color: var(--texto-3); margin-top: 1px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.item .pres { display: block; font-size: 14px; color: var(--azul); font-weight: 700; margin-top: 3px; }
+
+/* ── Ficha ────────────────────────────────────────────── */
+.gifcaja {
+  background: var(--superficie); border-bottom: 1px solid var(--borde);
+  display: grid; place-items: center; padding: 14px;
+}
+/* 260px y no media pantalla: el original es de 180x180 y ampliado se ensucia */
+/* 220px, no 260: con 260 el bloque de series y descanso quedaba cortado por el
+   borde de la pantalla en un móvil de 360x640 — y entre series el número es el
+   motivo por el que sacas el móvil, el GIF ya lo has visto veinte veces. */
+.gifcaja img { width: 220px; height: 220px; max-width: 70vw; max-height: 70vw; object-fit: contain; }
+.fichanom { font-size: 22px; font-weight: 800; letter-spacing: -.4px; line-height: 1.2; }
+.fichaen { font-size: 13px; color: var(--texto-3); margin-top: 2px; }
+.prescaja {
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+  margin: 14px 0; background: var(--azul-suave); border-radius: var(--r); padding: 14px;
+}
+.prescaja .gr { font-size: 26px; font-weight: 800; color: var(--azul); letter-spacing: -.5px; }
+.prescaja .lb { font-size: 14px; color: var(--texto-2); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.etq {
+  font-size: 13px; background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: 999px; padding: 5px 11px; color: var(--texto-2);
+}
+.etq b { color: var(--texto); font-weight: 700; }
+
+.bloque {
+  background: var(--superficie); border: 1px solid var(--borde);
+  border-radius: var(--r); margin-bottom: 10px; overflow: hidden;
+}
+.bloque > summary {
+  min-height: var(--tap); display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; font-size: 16px; font-weight: 700; list-style: none; gap: 10px;
+}
+.bloque > summary::-webkit-details-marker { display: none; }
+.bloque > summary::after { content: '▾'; color: var(--texto-3); font-size: 13px; }
+.bloque[open] > summary::after { content: '▴'; }
+.bloque .in { padding: 0 14px 14px; }
+
+.lista li { position: relative; padding-left: 18px; margin-bottom: 9px; font-size: 15px; line-height: 1.45; }
+.lista li::before {
+  content: ''; position: absolute; left: 2px; top: 9px;
+  width: 6px; height: 6px; border-radius: 50%; background: var(--azul);
+}
+.lista.mal li::before { background: var(--error); }
+.pasos { counter-reset: p; }
+.pasos li { counter-increment: p; position: relative; padding-left: 27px; margin-bottom: 10px; font-size: 15px; }
+.pasos li::before {
+  content: counter(p); position: absolute; left: 0; top: 1px;
+  width: 20px; height: 20px; border-radius: 50%; background: var(--fondo);
+  color: var(--texto-2); font-size: 11px; font-weight: 700; display: grid; place-items: center;
+}
+
+/* ── Descanso ─────────────────────────────────────────── */
+.descanso {
+  position: absolute; inset: 0; background: var(--superficie); z-index: 40;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 24px; animation: subir .22s ease-out;
+}
+@keyframes subir { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.descanso .rot {
+  font-size: 13px; letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--texto-3); font-weight: 700;
+}
+.aro { position: relative; display: grid; place-items: center; margin: 8px 0 4px; }
+.aro svg { transform: rotate(-90deg); }
+.aro .pista { stroke: var(--fondo); }
+.aro .barra-progreso { stroke: var(--azul); transition: stroke-dashoffset .25s linear; }
+.reloj {
+  position: absolute; font-size: 62px; font-weight: 800; letter-spacing: -2px;
+  color: var(--texto); font-variant-numeric: tabular-nums; line-height: 1;
+}
+.reloj.final { color: #C4442B; }
+.descanso .sig { font-size: 16px; color: var(--texto-2); text-align: center; margin: 14px 0 30px; padding: 0 10px; }
+.descanso .sig b { color: var(--texto); }
+.botones { display: flex; gap: 12px; width: 100%; max-width: 340px; }
+.btn96 {
+  flex: 1; min-height: 96px; border-radius: 18px; font-size: 18px; font-weight: 700;
+  background: var(--fondo); color: var(--texto); border: 1.5px solid var(--borde);
+  transition: transform .1s;
+}
+.btn96:active { transform: scale(.97); }
+.btn96.pri { background: var(--azul); color: #fff; border-color: var(--azul); }
+
+/* ── Explorar ─────────────────────────────────────────── */
+.buscador {
+  display: flex; align-items: center; gap: 8px; background: var(--superficie);
+  border: 1.5px solid var(--borde); border-radius: var(--r); padding: 0 12px; min-height: var(--tap);
+}
+.buscador input { flex: 1; border: none; outline: none; background: none; font-size: 16px; min-height: var(--tap); }
+.buscador .limpiar { color: var(--texto-3); font-size: 20px; padding: 0 4px; }
+.filtros { display: flex; gap: 8px; overflow-x: auto; padding: 12px 0 4px; scrollbar-width: none; }
+.filtros::-webkit-scrollbar { display: none; }
+.fchip {
+  flex-shrink: 0; border: 1.5px solid var(--borde); background: var(--superficie);
+  border-radius: 999px; padding: 13px 16px; font-size: 14px; font-weight: 600; white-space: nowrap;
+}
+.fchip[aria-pressed="true"] { background: var(--azul); color: #fff; border-color: var(--azul); }
+.grupo > summary {
+  min-height: 48px; display: flex; align-items: center; justify-content: space-between;
+  font-weight: 700; font-size: 15px; list-style: none; padding: 0 2px;
+}
+.grupo > summary::-webkit-details-marker { display: none; }
+.grupo > summary .cont { font-size: 13px; color: var(--texto-3); font-weight: 600; }
+
+/* ── Onboarding y ajustes ─────────────────────────────── */
+.centrado { padding: 24px 20px; display: flex; flex-direction: column; min-height: 100%; }
+.centrado .marca { display: grid; place-items: center; padding: 20px 0 26px; }
+.centrado .marca img { width: 190px; }
+.pregunta { font-size: 22px; font-weight: 800; letter-spacing: -.4px; line-height: 1.25; margin-bottom: 6px; }
+.subpregunta { font-size: 15px; color: var(--texto-2); margin-bottom: 18px; line-height: 1.45; }
+.opciones { display: flex; flex-direction: column; gap: 10px; }
+.opcion {
+  min-height: 68px; border-radius: var(--r); border: 1.5px solid var(--borde);
+  background: var(--superficie); text-align: left; padding: 13px 15px;
+  transition: background .12s, border-color .12s, transform .1s;
+}
+.opcion:active { transform: scale(.985); }
+.opcion[aria-pressed="true"] { border-color: var(--azul); background: var(--azul-suave); }
+.opcion .n { font-size: 17px; font-weight: 700; display: block; }
+.opcion .s { font-size: 14px; color: var(--texto-2); display: block; margin-top: 2px; line-height: 1.35; }
+
+.progreso { display: flex; gap: 6px; justify-content: center; margin-top: 22px; }
+.punto { width: 7px; height: 7px; border-radius: 50%; background: var(--borde); }
+.punto.on { background: var(--azul); }
+
+/* ── Splash ───────────────────────────────────────────── */
+.splash {
+  position: absolute; inset: 0; z-index: 90;
+  background: linear-gradient(135deg, var(--azul-marca-2), var(--azul-marca));
+  display: grid; place-items: center; animation: irse .3s ease-in .35s forwards;
+}
+.splash img { width: 62%; max-width: 260px; }
+@keyframes irse { to { opacity: 0; visibility: hidden; } }
+
+/* ── Transiciones de pantalla ─────────────────────────── */
+.entra { animation: entrar .2s ease-out; }
+@keyframes entrar { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ── Contador de series ───────────────────────────────── */
+/* Es lo que convierte el catálogo en un entreno guiado: sin esto la app te deja
+   en la puerta del gimnasio y no sabes por qué serie vas. */
+.series { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 14px 0 4px; }
+.punto-serie {
+  width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--borde);
+  background: var(--superficie); color: var(--texto-3); font-weight: 700; font-size: 15px;
+  transition: background .12s, color .12s, border-color .12s;
+}
+.punto-serie.hecha { background: var(--azul-suave); border-color: var(--azul-suave); color: var(--azul); }
+.punto-serie.activa { background: var(--azul); border-color: var(--azul); color: #fff; }
+.series-txt { font-size: 14px; color: var(--texto-2); font-weight: 600; margin-left: 2px; }
+
+/* ── Fila de sesión con botón de quitar ───────────────── */
+.fila { display: flex; align-items: stretch; gap: 8px; }
+.fila .item { flex: 1; min-width: 0; }
+.fila.aqui .item { border-color: var(--azul); background: var(--azul-suave); }
+.quitar {
+  width: 44px; flex-shrink: 0; border-radius: var(--r); color: var(--texto-3);
+  font-size: 24px; background: var(--superficie); border: 1px solid var(--borde);
+  margin-bottom: 8px;
+}
+.quitar:active { background: #FBE9E6; color: var(--error); }
+
+/* ── Navegación entre ejercicios ──────────────────────── */
+.navegar { display: flex; gap: 10px; margin-top: 14px; }
+.navegar .cta { font-size: 15px; }
+
+/* ── Aviso de versión nueva ───────────────────────────── */
+.aviso-version {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 16px; min-height: 52px; text-decoration: none;
+  background: var(--azul-suave); border-bottom: 1px solid var(--borde);
+  color: var(--texto); font-size: 14px; flex-shrink: 0;
+}
+.aviso-version .descargar {
+  background: var(--azul); color: #fff; border-radius: 999px;
+  padding: 8px 14px; font-weight: 700; font-size: 14px; flex-shrink: 0;
+}
